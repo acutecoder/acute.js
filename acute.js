@@ -84,7 +84,7 @@ var ACUTE =  {
 				}
 				
 			}
-
+            
 				
 			/*var data;
 			if( this.current == 'x' ) {
