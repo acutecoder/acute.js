@@ -1,93 +1,159 @@
 /*
  * ACUTE ENGINE
  */
-
 var ACUTE =  {
+	
+		url: undefined,
 
-		that :  this,
-
-		////////////////////////////////////////////	$tack
-		$tack : {
-
-			sequence : {},
+		hub : {},
+		
+		index: 0,
+		
+		///////////////////////////////////////////
+		
+		init : function( name, what, attr ) {	//	Initalises the seq
 			
-			current : '',
 			
-			handle : function( name, what, f ) {
+			if( what === 'x' ) {	//	x -- means that it is defining the name
 				
-				this.current = what;
-				
-				if( what === 'x' ) {
-					this.sequence[name] = {};
+				if( this.hub[name] === undefined ) {
+					//log('created');
+					this.hub[name] = {};
+					this.hub[name]['data'] = {};
+					this.hub[name]['seq'] = Array();	//	create new array seq
 				}
 				else {
-					if( what === 'get' || what === 'post' ) {
-						this.ajax();
-					}
-					else {
-						if( f !== undefined ) {
-							this.sequence[name][what] = f;
-						}
-						else {
-							this.sequence[name][what] = "";
-						}
-					}
-					
+						//alert( this.hub[name].length );
+					if( this.hub[name].length > 0 ) {
+						log('exists');
+					}	
 				}
 				
-				for( var i in this.sequence )	trace( i + '::' + this.sequence + '::' + f );
+			}
+			else {	//	if it is not the seq name and initalisation
 				
-			},
-			
-			
-			
-			run: function( name ) {
+				var last_i = this.hub[name]['seq'].length;
 				
-				if( this.sequence[name] !== undefined ) {
+					//	if get or post
+				if( what === 'get' || what === 'post' ) {
 					
-					if( this.current !== undefined ) {
-						
-						var data;
-						
-						
-						
-						if( this.current == 'x' ) {
-							
-						}
-						
-						if( this.current == 'model' ) {
-							
-						}
-						
-						if( this.current == 'view' ) {
-							
-						}
-					}
-				}
-				
-			},
-			
-			get: function( name, what ) {
-				
-				if( what !== undefined ) {
+						//	adds attr to nameded seq and type of fn
 					
-					if( this.sequence[name] ) {
-						
-						if( what === 'x' ) 	return this.sequence[name]
-						else 				return this.sequence[name][what];
-						
-					}
-					else return undefined;
+					this.hub[name]['seq'][last_i] = {};
+					this.hub[name]['seq'][last_i][what] = attr;
+					
+					var obj = this.hub[name]['seq'][last_i][what];
 					
 				}
-				else return this.sequence[name];
-				
-			},
-			ajax: function() {
-				alert('hey!!!');
-			},
+				else {	//	if normal function
+					
+					if( attr !== undefined ) {	//	 if attr/function
+						
+							//	add function to seq
+						this.hub[name]['seq'][last_i][what] = attr;
+					}
+
+				}
+			}
+
+		},
+		
+		
+		///////////////////////////////////////////////////////////////
+		run: function( name, data ) {		//	execute the seq
+			
+			var len = this.hub[name]['seq'].length;
+
+			if( this.hub[name] !== undefined  &&  is_number( len ) ) this.exe( name, 0 );
 			
 		},
+		
+		exe: function( name, i, data ) {
+					
+			var current_obj =  this.hub[name]['seq'][i];
+			
+			for( var j in current_obj ) {	// checking index
+				
+				if( j === 'get' || j === 'post' ) {
+
+					log( current_obj[j] );
+					ajax
+				}
+				else {
+					
+				}
+				
+			}
+
+				
+			/*var data;
+			if( this.current == 'x' ) {
+			}
+			if( this.current == 'model' ) {
+				
+			}
+			if( this.current == 'view' ) {
+			}
+			*/
+		},
+		
+		ajax: function( call_back_i, obj, args ) {
+				//json, call_type, data_type
+				
+				var that = this;
+				
+				
+				if( obj !== undefined ) {
+					
+				}
+				
+				
+				var json = json ? json : '';
+				var data_type = data_type ? data_type : 'json';
+				var call_type = call_type ? call_type : 'get';
+				
+				call_type = call_type.toUpperCase();
+				
+				$.ajax({
+					type	: call_type,
+					data	: json,
+					dataType: data_type
+				}).done( function( data ){
+					
+					if( call_back !== undefined )	{
+						that.exe();
+					}	
+				})
+		},
+			
+
+		clear: function() {
+			
+		},
+		
+		
+		
+		
+		
+		
+		/*
+		get: function( name, what ) {
+			
+			if( what !== undefined ) {
+				
+				if( this.hub[name] ) {
+					
+					if( what === 'x' ) 	return this.hub[name]
+					else 				return this.hub[name][what];
+					
+				}
+				else return undefined;
+				
+			}
+			else return this.hub[name];
+			
+		},*/
+		
 		
 		
 		
@@ -111,11 +177,6 @@ var ACUTE =  {
 				});*/
 		
 		
-		data_$tore : {
-			
-			
-			
-		}
 
 		
 		

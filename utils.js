@@ -12,6 +12,10 @@ function is_string( input ){
 function is_function( input ){
 	return typeof 'function';
 }
+
+function is_number(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
   
 function are_arguments( input ){
 	if( typeof input == 'string' )	return false;
@@ -45,7 +49,7 @@ function get_from( get, from, unique )
 }
 
 
-function trace( s ){
+function log( s ){
 	if( console )	console.log( s );
 }
 

@@ -2,12 +2,49 @@
  * THE APP TESTING
  */
 
-$( function(){
+$(function() {
 	
 	
-	A('sam').get();
+	A('sam').get({
+		url: 'gateway.php', 
+		data_type:'json' 
+	});
 	
-	//alert( A('hmmm').run().name );
+	
+	
+	A('sam').run();
+	
+
+	//ACUTE.url = 'gateway.php';
+	
+	///alert( ACUTE.default_url );
+
+
+
+
+	
+	
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//alert( A('hmmm').run().name );
 	
 	//A('hey').run().data();
 	/*
@@ -15,7 +52,3 @@ $( function(){
 		alert('yahooooo');
 	}).run();
 	*/
-});
-
-
-

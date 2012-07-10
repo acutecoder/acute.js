@@ -5,7 +5,7 @@ var A = ( function( name ) {
 
 	var build = function() {	//	LIST OF ARGUMENTS
 		
-		var return_obj = function() {
+		var return_obj = function() {	//	This construct
 			this.name = name;
 		};
 
@@ -21,13 +21,13 @@ var A = ( function( name ) {
 	
 	methods = {
 
-		run : function() {
-			ACUTE.$tack.run( name )
+		run : function( data ) {
+			ACUTE.run( name, data )
 			return build('data');
 		},
 		
-		model: function(f) {
-			ACUTE.$tack.handle( name, 'model', f );
+		model: function( fn ) {
+			ACUTE.init( name, 'model', fn );
 			return build(
 				'data',
 				'view',
@@ -35,8 +35,8 @@ var A = ( function( name ) {
 			);
 		},
 		
-		view: function() {
-			ACUTE.$tack.handle( name, 'view', f );
+		view: function( fn ) {
+			ACUTE.init( name, 'view', fn );
 			return build(
 				'data',
 				'model',
@@ -48,9 +48,9 @@ var A = ( function( name ) {
 			alert('data');
 		},
 		
-		get: function( json ) {
+		get: function( obj ) {
 			
-			ACUTE.$tack.handle( name, 'get' );
+			ACUTE.init( name, 'get', obj );
 			
 			return build(
 				'data',
@@ -65,7 +65,7 @@ var A = ( function( name ) {
 
 	};
 	
-	ACUTE.$tack.handle( name, 'x' );	
+	ACUTE.init( name, 'x' );	
 	
 	return build(
 		'run',
