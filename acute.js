@@ -76,16 +76,15 @@ var ACUTE =  {
 				
 				if( j === 'get' || j === 'post' ) {
 
-					log( current_obj[j] );
-					ajax
+					//log( current_obj[j] );
+					ajax(  )
 				}
 				else {
 					
 				}
 				
 			}
-            
-				
+			
 			/*var data;
 			if( this.current == 'x' ) {
 			}
@@ -98,27 +97,33 @@ var ACUTE =  {
 		},
 		
 		ajax: function( call_back_i, obj, args ) {
-				//json, call_type, data_type
 				
 				var that = this;
-				
+				var ajax_params = {};
 				
 				if( obj !== undefined ) {
+					ajax_params = obj;
+				}
+				else {
+					var json = json ? json : '';
+					var data_type = data_type ? data_type : 'json';
+					var call_type = call_type ? call_type : 'get';
+					call_type = call_type.toUpperCase();
+					ajax_params = {
+						type	: call_type,
+						dataType: data_type
+					}
 					
+					if( args !== undefined ) {
+						ajax_params['data'] = args;
+					}
 				}
 				
 				
-				var json = json ? json : '';
-				var data_type = data_type ? data_type : 'json';
-				var call_type = call_type ? call_type : 'get';
 				
-				call_type = call_type.toUpperCase();
 				
-				$.ajax({
-					type	: call_type,
-					data	: json,
-					dataType: data_type
-				}).done( function( data ){
+				
+				$.ajax().done( function( data ){
 					
 					if( call_back !== undefined )	{
 						that.exe();
@@ -126,7 +131,10 @@ var ACUTE =  {
 				})
 		},
 			
-
+		reset_index: function() {
+			
+		},
+		
 		clear: function() {
 			
 		},
