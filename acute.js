@@ -1,6 +1,11 @@
 /*
  * ACUTE ENGINE
  */
+
+
+//	ACUTE['hub']['name']['data'] = {};
+//	ACUTE['hub']['name']['seq'][0-10]['function_type'] = function () {		};
+
 var ACUTE =  {
 	
 		url: undefined,
@@ -77,15 +82,20 @@ var ACUTE =  {
 					
 			var current_obj =  this.hub[this.current]['seq'][i];
 			
+			var next_i = i + 1;
+			
 			for( var j in current_obj ) {	// checking index
 				
 				if( j === 'get' || j === 'post' ) {
-
-					var next_i = i + 1;
-
-					ajax( next_i, current_obj[j], data );
+					
+					console.log( current_obj[j] );
+					
+					this.ajax( next_i, current_obj[j], data );
 				}
 				else {
+					
+					var passing = this.hub[this.current]['seq'][i]( data );
+					this.exe( next_i, passing );
 					
 					//	run other functions
 					//	and loop back round
@@ -98,41 +108,53 @@ var ACUTE =  {
 		
 		ajax: function( call_back_i, obj, args ) {
 				
-				var that = this;
-				var ajax_params = {};
-				
-				if( obj !== undefined ) {
-					ajax_params = obj;
+			var that = this;
+			var ajax_params = obj;
+			
+			/*if( obj !== undefined ) {
+				ajax_params = obj;
+			}
+			else {
+				var json = json ? json : '';
+				var data_type = data_type ? data_type : 'json';
+				var call_type = call_type ? call_type : 'get';
+				call_type = call_type.toUpperCase();
+
+				ajax_params = {
+					type	: call_type,
+					dataType: data_type
 				}
-				else {
+			}*/
 
-					var json = json ? json : '';
-					var data_type = data_type ? data_type : 'json';
-					var call_type = call_type ? call_type : 'get';
-					call_type = call_type.toUpperCase();
+			if( args !== undefined ) {
+				
+				var arg_str, addition = "", first = true;
+				
+				for( var e in args ) {
+					log( e + '::' + args[e] );
+					addition = e + '=' + args[e];
+					if( first ) first = false;
+					else		addition = '&' + addition;
 
-					ajax_params = {
-						type	: call_type,
-						dataType: data_type
+					arg_str += addition;
+				}
+				log( arg_str );
+				
+				ajax_params['data'] = arg_str;
+			}
+			
+			$.ajax( ajax_params ).done( function( data ) {
+				
+				if( call_back_i < that.hub[that.current]['seq'].length ) {
+
+					for(var i in data) {
+						that.hub[that.current]['data'][i] = data[i];
 					}
+					log( data );
 					
-				}
-
-				if( args !== undefined ) {
-					ajax_params['data'] = args;
-				}
-				
-				$.ajax( ajax_params ).done( function( data ){
-					
-					if( call_back_i < this.hub[this.current]['seq'].length )	{
-
-						for(var i in data) {
-							this.hub[this.current]['data'][i] = data[i];
-						}
-						
-						that.exe();
-					}	
-				})
+					that.exe( call_back_i, data );
+				}	
+			});
 		},
 			
 		reset_index: function() {

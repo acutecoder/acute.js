@@ -7,12 +7,14 @@ $(function() {
 	
 	A('sam').get({
 		url: 'gateway.php', 
-		data_type:'json' 
+		dataType:'json' 
 	});
 	
 	
 	
-	A('sam').run();
+	A('sam').run({
+		'hey' : 'hi'
+	});
 	
 
 	//ACUTE.url = 'gateway.php';
