@@ -9,6 +9,7 @@ var ACUTE =  {
 		
 		index: 0,
 		
+		current: '',
 		///////////////////////////////////////////
 		
 		init : function( name, what, attr ) {	//	Initalises the seq
@@ -62,38 +63,37 @@ var ACUTE =  {
 		///////////////////////////////////////////////////////////////
 		run: function( name, data ) {		//	execute the seq
 			
+			this.current = name;
+
 			var len = this.hub[name]['seq'].length;
 
-			if( this.hub[name] !== undefined  &&  is_number( len ) ) this.exe( name, 0 );
+			if( this.hub[name] !== undefined  &&  is_number( len ) ) {
+				this.exe( 0, data );
+			}
 			
 		},
 		
-		exe: function( name, i, data ) {
+		exe: function( i, data ) {
 					
-			var current_obj =  this.hub[name]['seq'][i];
+			var current_obj =  this.hub[this.current]['seq'][i];
 			
 			for( var j in current_obj ) {	// checking index
 				
 				if( j === 'get' || j === 'post' ) {
 
-					//log( current_obj[j] );
-					ajax(  )
+					var next_i = i + 1;
+
+					ajax( next_i, current_obj[j], data );
 				}
 				else {
 					
+					//	run other functions
+					//	and loop back round
+
 				}
 				
 			}
-			
-			/*var data;
-			if( this.current == 'x' ) {
-			}
-			if( this.current == 'model' ) {
-				
-			}
-			if( this.current == 'view' ) {
-			}
-			*/
+
 		},
 		
 		ajax: function( call_back_i, obj, args ) {
@@ -105,27 +105,31 @@ var ACUTE =  {
 					ajax_params = obj;
 				}
 				else {
+
 					var json = json ? json : '';
 					var data_type = data_type ? data_type : 'json';
 					var call_type = call_type ? call_type : 'get';
 					call_type = call_type.toUpperCase();
+
 					ajax_params = {
 						type	: call_type,
 						dataType: data_type
 					}
 					
-					if( args !== undefined ) {
-						ajax_params['data'] = args;
-					}
+				}
+
+				if( args !== undefined ) {
+					ajax_params['data'] = args;
 				}
 				
-				
-				
-				
-				
-				$.ajax().done( function( data ){
+				$.ajax( ajax_params ).done( function( data ){
 					
-					if( call_back !== undefined )	{
+					if( call_back_i < this.hub[this.current]['seq'].length )	{
+
+						for(var i in data) {
+							this.hub[this.current]['data'][i] = data[i];
+						}
+						
 						that.exe();
 					}	
 				})
