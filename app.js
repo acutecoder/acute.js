@@ -14,6 +14,12 @@ $(function() {
 	
 	A('sam').run({
 		'hey' : 'hi'
+	}).data(function(a){
+		console.log(a);
+		for( var i in a ) {
+			console.log( a + ' :: ' + a[i] );
+		}
+		
 	});
 	
 
@@ -21,10 +27,6 @@ $(function() {
 	
 	///alert( ACUTE.default_url );
 
-
-
-
-	
 	
 });
 

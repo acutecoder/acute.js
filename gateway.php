@@ -11,7 +11,7 @@
 			'b' => 'something else'
 		);
 		
-		return json_encode($a);
+		echo json_encode($a);
 		
 	}
 	

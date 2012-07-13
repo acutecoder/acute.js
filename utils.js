@@ -10,7 +10,7 @@ function is_string( input ){
 }
 
 function is_function( input ){
-	return typeof 'function';
+	return typeof input == 'function';
 }
 
 function is_number(n) {
