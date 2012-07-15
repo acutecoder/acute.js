@@ -5,28 +5,31 @@
 $(function() {
 	
 	
+	
 	A('sam').get({
 		url: 'gateway.php', 
 		dataType:'json' 
-	});
+	 }).view(function(){
+	 	
+		});
 	
 	
 	
 	A('sam').run({
 		'hey' : 'hi'
-	}).data(function(a){
-		console.log(a);
-		for( var i in a ) {
-			console.log( a + ' :: ' + a[i] );
-		}
+	})
+	.data(function(data){
+
+		//for( var i in data)
+		//console.log(i + '::' + data[i]);
 		
-	});
+	}, 'a');
+	/*.data*/
 	
-
-	//ACUTE.url = 'gateway.php';
 	
-	///alert( ACUTE.default_url );
-
+	
+	
+	
 	
 });
 

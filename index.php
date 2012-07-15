@@ -59,6 +59,7 @@
 		<script type = 'text/javascript' src = 'utils.js'></script>
 		<script type="text/javascript" src="acute.js"></script>
 		<script type="text/javascript" src="a.js"></script>
+		<script type="text/javascript" src="template.js"></script>
 		
 		<script type="text/javascript" src="app.js"></script>
 		

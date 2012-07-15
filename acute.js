@@ -2,6 +2,12 @@
  * ACUTE ENGINE
  */
 
+//	TODO 	ADD TEMPLATING and RENDER FUNCTIONS
+
+//	TODO	ADD MORE ADVANCED TEMPLATING - SUCH AS FOR, WHILE, IF... etc.
+//	TODO	ADD FUNCTIONALITY FOR ALL FUNCTION TYPES
+
+//	TODO	HASH URI ENGINE
 
 //	ACUTE['hub']['name']['data'] = {};
 //	ACUTE['hub']['name']['seq'][0-10]['function_type'] = function () {		};
@@ -10,11 +16,14 @@ var ACUTE =  {
 	
 		url: undefined,
 
-		hub : {},
+		hub : {},	//	data model which holds all the elements
 		
 		index: 0,
 		
 		current: '',
+		
+		data_flag: true,
+		
 		///////////////////////////////////////////
 		
 		init : function( name, what, attr ) {	//	Initalises the seq
@@ -39,8 +48,10 @@ var ACUTE =  {
 			}
 			else {	//	if it is not the seq name and initalisation
 				
-				var last_i = this.hub[name]['seq'].length;
 				
+				
+				var last_i = this.hub[name]['seq'].length;
+
 					//	if get or post
 				if( what === 'get' || what === 'post' ) {
 					
@@ -55,11 +66,17 @@ var ACUTE =  {
 				}
 				else {	//	if normal function
 					
+					this.hub[name]['seq'][last_i] = {};
+					
 					if( attr !== undefined ) {	//	 if attr/function
-						
+
 							//	add function to seq
 						this.hub[name]['seq'][last_i][what] = attr;
 					}
+					else{
+						
+						this.hub[name]['seq'][last_i][what] = {};
+					} 
 				}
 			}
 
@@ -71,8 +88,8 @@ var ACUTE =  {
 			
 			this.current = name;
 			var len = this.hub[name]['seq'].length;
-
-			if( this.hub[name] !== undefined  &&  is_number( len ) ) {
+			
+			if( this.hub[name] !== undefined  &&  this.is_number( len ) ) {
 				
 				this.exe( 0, data );
 			}
@@ -108,10 +125,31 @@ var ACUTE =  {
 		},
 		
 		ajax: function( call_back_i, obj, args ) {
-				
+			
+			this.data_flag = false;
+			
 			var that = this;
 			var ajax_params = obj;
-
+			
+			ajax_params['timeout'] = 5000;
+			ajax_params['success'] = function( data ) {	//	AJAX SUCCESS FUNCTION
+	
+				for(var i in data) {
+					
+					that.hub[that.current]['data'][i] = data[i];
+				}
+				
+				if( call_back_i < that.hub[that.current]['seq'].length ) {
+					that.exe( call_back_i, data );
+				}
+				else {
+					that.data_flag = true;
+				}
+			}
+			
+			ajax_params['error'] = function() {	//	AJAX ERROR FUNCTION
+				that.data_flag = true;
+			}
 			
 			if( args !== undefined ) {
 				
@@ -130,33 +168,24 @@ var ACUTE =  {
 				
 			}
 			
-			$.ajax( ajax_params ).done( function( data ) {
-				
-				for(var i in data) {
-					that.hub[that.current]['data'][i] = data[i];
-					console.log( i + '::' + that.hub[that.current]['data'][i] );
-				}
-				
-				if( call_back_i < that.hub[that.current]['seq'].length ) {
-					that.exe( call_back_i, data );
-				}
-				
-				
-				
-			});
+			/////	RUN AJAX
+			$.ajax( ajax_params );
+	
 		},
 		
 		//////////////////////////////////////////	returns current selected objects data
 		return_data: function( what_data ) {	//	pass array get a json or single
 												//	depending on no of results
 			var cnt = 0, return_data = {};
-			
+			alert( what_data.length );
 			for( var i in what_data ) {
 				return_data[what_data[i]] = this.hub[this.current]['data'][what_data[i]];
 				cnt++;
 			}
-			
+			alert( cnt );
 			if( cnt === 0 ) {
+				
+				for( var j in this.hub[this.current]['data'] ) console.log(this.hub[this.current]['data'][i]);
 				return_data = this.hub[this.current]['data'];
 			}
 			else if( cnt === 1 ) {
@@ -188,6 +217,7 @@ var ACUTE =  {
 					return_obj.prototype[arguments[i]] = this.methods[arguments[i]]
 				}
 			}
+			//if( this.hub[this.current]['data'] !== undefined )  return_obj['data'] = this.hub[this.current]['data'];
 			return new return_obj();
 		},
 		//////////////////////////////////////////	return methods
@@ -218,36 +248,13 @@ var ACUTE =  {
 				);
 			},
 			
-			data: function() {
-				var fn = [], data_names =[], return_obj = {}, 
-				fn_cnt = 0, dn_cnt = 0;
-				
-				
-				for( var i in arguments ) {
-					
-					if( typeof arguments[i] == 'string' ) {
-						data_names[dn_cnt++];
-					}
-					else if( typeof arguments[i] == 'function' ) {
-						fn[fn_cnt++] = arguments[i];
-					}
-				}
-				
-				var data = ACUTE.return_data( data_names );
-				
-				
-				for( var j in fn ) {
-					fn[j]( data );
-				}
-				
-			},
-			
 			get: function( obj ) {
 				
 				ACUTE.init( ACUTE.current, 'get', obj );
 				return ACUTE.build(
 					'data',
 					'model',
+					'view',
 					'run'
 				);
 			},
@@ -258,18 +265,45 @@ var ACUTE =  {
 				return ACUTE.build(
 					'data',
 					'model',
+					'view',
 					'run'
 				);
+			},
+			
+			data: function() {
+					
+				var args = arguments;
+				var that = this;
+				
+				if( ACUTE.data_flag ) {
+					var fn = [], data_names =[], return_obj = {}, 
+					fn_cnt = 0, dn_cnt = 0;
+					
+					for( var i in arguments ) {
+						
+						if( typeof arguments[i] == 'string' ) {
+							data_names[dn_cnt++] = arguments[i];
+						}
+						else if( typeof arguments[i] == 'function' ) {
+							fn[fn_cnt++] = arguments[i];
+						}
+					}
+					
+					var data = ACUTE.return_data( data_names );
+					
+					for( var j in fn ) {
+						fn[j]( data );
+					}
+				}
+				else {
+					setTimeout( function() {
+						that.data.apply( that, args );
+					}, 100 );
+				}
 			}
-	
 		},
 		
-		
-		
-		
-		
-		
-		
+
 		
 		///////////////////////////	TOOLS
 		
