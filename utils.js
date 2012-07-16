@@ -49,6 +49,14 @@ function get_from( get, from, unique )
 }
 
 
+function echo( s ) {
+	log( s );
+}
+
+function trace( s ) {
+	log( s );
+}
+
 function log( s ){
 	if( console )	console.log( s );
 }

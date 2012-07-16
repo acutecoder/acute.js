@@ -44,29 +44,29 @@ var ACUTE =  {
 						log('exists');
 					}	
 				}
-				
 			}
 			else {	//	if it is not the seq name and initalisation
-				
-				
-				
-				var last_i = this.hub[name]['seq'].length;
 
+				var last_i = this.hub[name]['seq'].length;
+				this.hub[name]['seq'][last_i] = {};
+				
 					//	if get or post
 				if( what === 'get' || what === 'post' ) {
 					
 						//	adds attr to nameded seq and type of fn
-					
-					this.hub[name]['seq'][last_i] = {};
+						
 					this.hub[name]['seq'][last_i][what] = attr;
 					this.hub[name]['seq'][last_i][what]['type'] = what.toUpperCase();
 					
 					var obj = this.hub[name]['seq'][last_i][what];
 					
 				}
-				else {	//	if normal function
+				else if( what === 'template' ) {
+
+					this.hub[name]['seq'][last_i][what] = attr;
 					
-					this.hub[name]['seq'][last_i] = {};
+				}
+				else {	//	if normal function
 					
 					if( attr !== undefined ) {	//	 if attr/function
 
@@ -79,7 +79,6 @@ var ACUTE =  {
 					} 
 				}
 			}
-
 		},
 		
 		
@@ -96,130 +95,43 @@ var ACUTE =  {
 			
 		},
 		
+		/////////////////////////////////////////////////////////////////////////////////
+		//////////////////////	exe excutes the individual functions of the sequence and then passes the next index
+		//////////////////////	to itself to execute the next function
 		exe: function( i, data ) {
 					
 			var current_obj =  this.hub[this.current]['seq'][i];
 			
 			var next_i = i + 1;
+
+			if( next_i <=  this.hub[this.current]['seq'].length ) {
 			
-			for( var j in current_obj ) {	// checking index
-				
-				if( j === 'get' || j === 'post' ) {
+				for( var j in current_obj ) {	// checking index
 					
-					//console.log( current_obj[j] );
-					
-					this.ajax( next_i, current_obj[j], data );
+					if( j === 'get' || j === 'post' ) {
+						
+						//console.log( current_obj[j] );
+						
+						this.ajax( next_i, current_obj[j], data );
+					}
+					else if( j === 'template' ) {
+						
+						template_engine( current_obj[j].container_id, current_obj[j].template_id, data ) ;
+					}   
+					else {
+						var passing = current_obj[j]( data );
+						this.exe( next_i, passing );
+						
+						//	run other functions
+						//	and loop back round
+					}
 				}
-				else {
-					
-					var passing = this.hub[this.current]['seq'][i]( data );
-					this.exe( next_i, passing );
-					
-					//	run other functions
-					//	and loop back round
-
-				}
-				
 			}
-
+			else {
+				this.data_flag = true;
+			}
 		},
 		
-		ajax: function( call_back_i, obj, args ) {
-			
-			this.data_flag = false;
-			
-			var that = this;
-			var ajax_params = obj;
-			
-			ajax_params['timeout'] = 5000;
-			ajax_params['success'] = function( data ) {	//	AJAX SUCCESS FUNCTION
-	
-				for(var i in data) {
-					
-					that.hub[that.current]['data'][i] = data[i];
-				}
-				
-				if( call_back_i < that.hub[that.current]['seq'].length ) {
-					that.exe( call_back_i, data );
-				}
-				else {
-					that.data_flag = true;
-				}
-			}
-			
-			ajax_params['error'] = function() {	//	AJAX ERROR FUNCTION
-				that.data_flag = true;
-			}
-			
-			if( args !== undefined ) {
-				
-				var arg_str='', addition = "", first = true;
-				
-				for( var e in args ) {
-
-					addition = e + '=' + args[e];
-					if( first ) first = false;
-					else		addition = '&' + addition;
-
-					arg_str += addition;
-				}
-				
-				ajax_params['data'] = arg_str;
-				
-			}
-			
-			/////	RUN AJAX
-			$.ajax( ajax_params );
-	
-		},
-		
-		//////////////////////////////////////////	returns current selected objects data
-		return_data: function( what_data ) {	//	pass array get a json or single
-												//	depending on no of results
-			var cnt = 0, return_data = {};
-			alert( what_data.length );
-			for( var i in what_data ) {
-				return_data[what_data[i]] = this.hub[this.current]['data'][what_data[i]];
-				cnt++;
-			}
-			alert( cnt );
-			if( cnt === 0 ) {
-				
-				for( var j in this.hub[this.current]['data'] ) console.log(this.hub[this.current]['data'][i]);
-				return_data = this.hub[this.current]['data'];
-			}
-			else if( cnt === 1 ) {
-				for( var b in return_data ) return_data = return_data[b];
-			}
-			return return_data;
-		},
-			
-		reset_index: function() {
-			
-		},
-		
-		clear: function() {
-			
-		},
-		
-		////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////	BUILD
-		////////////////////////////////////////////////////////////	RETURN OBJECT
-		////////////////////////////////////////////////////////////
-		build: function() {	//	LIST OF ARGUMENTS
-			
-			var return_obj = function() {};	//	This construct
-				
-			for( var i in arguments ) {
-				
-				if( this.methods[arguments[i]] !== undefined) {
-					
-					return_obj.prototype[arguments[i]] = this.methods[arguments[i]]
-				}
-			}
-			//if( this.hub[this.current]['data'] !== undefined )  return_obj['data'] = this.hub[this.current]['data'];
-			return new return_obj();
-		},
 		//////////////////////////////////////////	return methods
 		methods : {
 	
@@ -255,7 +167,8 @@ var ACUTE =  {
 					'data',
 					'model',
 					'view',
-					'run'
+					'run',
+					'template'
 				);
 			},
 			
@@ -270,8 +183,22 @@ var ACUTE =  {
 				);
 			},
 			
+			template: function( container_id, template_id ) {
+				
+				if( container_id && template_id ) {
+					template_details = {
+						container_id : container_id,
+						template_id : template_id
+					}
+					ACUTE.init( ACUTE.current, 'template', template_details );
+				}
+				
+			},
+			
 			data: function() {
-					
+				
+				console.log('there');
+				
 				var args = arguments;
 				var that = this;
 				
@@ -301,8 +228,59 @@ var ACUTE =  {
 					}, 100 );
 				}
 			}
+			
 		},
 		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////	returns current selected objects data
+		return_data: function( what_data ) {	//	pass array get a json or single
+												//	depending on no of results
+			var cnt = 0, return_data = {};
+
+			for( var i in what_data ) {
+				return_data[what_data[i]] = this.hub[this.current]['data'][what_data[i]];
+				cnt++;
+			}
+			//alert( cnt );
+			if( cnt === 0 ) {
+				
+				for( var j in this.hub[this.current]['data'] ) console.log(this.hub[this.current]['data'][i]);
+				return_data = this.hub[this.current]['data'];
+			}
+			else if( cnt === 1 ) {
+				for( var b in return_data ) return_data = return_data[b];
+			}
+			return return_data;
+		},
+		
+		
+		////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////	BUILD
+		////////////////////////////////////////////////////////////	RETURN OBJECT
+		////////////////////////////////////////////////////////////
+		build: function() {	//	LIST OF ARGUMENTS
+			
+			var return_obj = function() {};	//	This construct
+				
+			for( var i in arguments ) {
+				
+				if( this.methods[arguments[i]] !== undefined) {
+					
+					return_obj.prototype[arguments[i]] = this.methods[arguments[i]]
+				}
+			}
+			//if( this.hub[this.current]['data'] !== undefined )  return_obj['data'] = this.hub[this.current]['data'];
+			return new return_obj();
+		},
+		
+		reset_index: function() {
+			
+		},
+		
+		clear: function() {
+			
+		},
 
 		
 		///////////////////////////	TOOLS
@@ -347,7 +325,74 @@ var ACUTE =  {
 			else return this.hub[name];
 			
 		},*/
+		
+		
+		
+		
+		////////////////////////////////////////////////	HANDLES AJAX GET AND POST METHODS
+		ajax: function( call_back_i, obj, args ) {
+			
+			this.data_flag = false;
+			
+			var that = this;
+			var ajax_params = obj;
+			
+			ajax_params['timeout'] = 5000;
+			ajax_params['success'] = function( data ) {	//	AJAX SUCCESS FUNCTION
+	
+				for(var i in data) {
+					
+					that.hub[that.current]['data'][i] = data[i];
+				}
+				
+				if( call_back_i < that.hub[that.current]['seq'].length ) {
+					that.exe( call_back_i, data );
+				}
+				else {
+					that.data_flag = true;
+				}
+			}
+			
+			ajax_params['error'] = function() {	//	AJAX ERROR FUNCTION
+				that.data_flag = true;
+			}
+			
+			if( args !== undefined ) {
+				
+				var arg_str='', addition = "", first = true;
+				
+				for( var e in args ) {
 
+					addition = e + '=' + args[e];
+					if( first ) first = false;
+					else		addition = '&' + addition;
+
+					arg_str += addition;
+				}
+				
+				ajax_params['data'] = arg_str;
+			}
+			
+			/////	RUN AJAX
+			$.ajax( ajax_params );
+	
+		},
 	
 };
+
+/*
+ * A - API
+ */
+var A = ( function( name ) {
+
+	ACUTE.init.call( ACUTE, name, 'x' );	
+	
+	return ACUTE.build.call( ACUTE,
+		'run',
+		'model',
+		'view',
+		'get',
+		'post'
+	);
+});
 

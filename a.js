@@ -1,6 +1,6 @@
 /*
  * A - API
- */
+
 var A = ( function( name ) {
 
 	ACUTE.init.call( ACUTE, name, 'x' );	
@@ -13,3 +13,4 @@ var A = ( function( name ) {
 		'post'
 	);
 });
+ */

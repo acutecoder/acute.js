@@ -9,24 +9,21 @@ $(function() {
 	A('sam').get({
 		url: 'gateway.php', 
 		dataType:'json' 
-	 }).view(function(){
-	 	
-		});
+	 }).template( '#container', '#con_temp' );
 	
-	
+	/*
 	
 	A('sam').run({
-		'hey' : 'hi'
-	})
-	.data(function(data){
+		hey : 'hi'
+	});
 
-		//for( var i in data)
-		//console.log(i + '::' + data[i]);
-		
-	}, 'a');
-	/*.data*/
+	*/
+	$('#btn').on('click', function(){
+		A('sam').run({hey:'run'});
+	})
 	
-	
+
+
 	
 	
 	

@@ -44,12 +44,33 @@
 			
 			<div id = 'container'>
 				
+				hi
 				
 			</div>
+			
+			<script id="con_temp" type="template">
+				
+				<table>
+					
+					<tr>
+						<td>{{a}}</td>
+					</tr>
+					<tr>
+						<td>{{b}}</td>
+					</tr>
+					
+				</table>
+				
+				
+			</script>
+			
+			
+			
 			
 			<div id = 'aaa'>
 				
 			</div>
+			
 			
 			<button id = 'btn'>something</button>
 			
