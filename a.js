@@ -1,16 +1,1 @@
-/*
- * A - API
-
-var A = ( function( name ) {
-
-	ACUTE.init.call( ACUTE, name, 'x' );	
-	
-	return ACUTE.build.call( ACUTE,
-		'run',
-		'model',
-		'view',
-		'get',
-		'post'
-	);
-});
- */
+//	THIS FILE IS BEING USED TO DEVELOP NEW FEATURES BEFORE BEING ADDED IN

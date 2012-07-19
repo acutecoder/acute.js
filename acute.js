@@ -332,14 +332,18 @@ var ACUTE =  {
 		////////////////////////////////////////////////	HANDLES AJAX GET AND POST METHODS
 		ajax: function( call_back_i, obj, args ) {
 			
-			this.data_flag = false;
-			
+			this.data_flag = false;	//	FLAG SETS THE EXECUTION TO WAIT
+									//	ON A TIMER, WHICH CHECKS EVERY 100ms
+									//	UNTIL DATA HAS RETURNED AND
+									//	BEEN PROCESSED
 			var that = this;
 			var ajax_params = obj;
 			
 			ajax_params['timeout'] = 5000;
 			ajax_params['success'] = function( data ) {	//	AJAX SUCCESS FUNCTION
-	
+				
+				console.log(data);
+				
 				for(var i in data) {
 					
 					that.hub[that.current]['data'][i] = data[i];
@@ -352,31 +356,67 @@ var ACUTE =  {
 					that.data_flag = true;
 				}
 			}
+			/////////////////	END SUCESS FUNCTION
 			
 			ajax_params['error'] = function() {	//	AJAX ERROR FUNCTION
 				that.data_flag = true;
 			}
+			/////////////////	END ERROR FUNCTION
 			
 			if( args !== undefined ) {
-				
-				var arg_str='', addition = "", first = true;
-				
-				for( var e in args ) {
 
-					addition = e + '=' + args[e];
-					if( first ) first = false;
-					else		addition = '&' + addition;
-
-					arg_str += addition;
-				}
-				
-				ajax_params['data'] = arg_str;
+				ajax_params['data'] = this.construct_query(args, ajax_params['data']);
+				console.log(ajax_params.data);
 			}
 			
 			/////	RUN AJAX
 			$.ajax( ajax_params );
 	
 		},
+		
+		construct_query : (function(new_data, old_str) {
+
+		    var query_obj = new_data;
+		    
+		    var return_string = '', add_string = '';
+		    
+		    if( old_str !== undefined ) {
+		        
+		        var str = old_str, prev_obj = {};
+                
+                str = str.split('&');
+                var temp_split = [];
+                
+                for(var i = 0; i <str.length; i++) {
+
+                    temp_split = str[i].split('=');
+                    if(temp_split[1] !== undefined) {
+                        prev_obj[temp_split[0]] = temp_split[1];
+                    }
+                }
+                
+                var new_obj = prev_obj;
+                for(var j in query_obj) {
+                    new_obj[j] = query_obj[j];
+                }
+                query_obj = new_obj;
+	            
+		    }
+		    
+		    var new_string = true;
+		    for(var i in query_obj) {
+
+		        var  add_char = '&';
+		        if(new_string) {
+		            add_char = '';
+		            new_string = false;
+		        }        
+		    
+		        return_string += add_char + i + '=' + query_obj[i];
+		    }
+		    console.log(return_string);
+		    return return_string;
+		})
 	
 };
 

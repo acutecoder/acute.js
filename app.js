@@ -19,6 +19,7 @@ $(function() {
 
 	*/
 	$('#btn').on('click', function(){
+		//location.hash = 'hi_there';
 		A('sam').run({hey:'run'});
 	})
 	

@@ -11,8 +11,8 @@ var template_engine = function ( container_name, template_name, data )
 		var reg;
 		var original_template;
 		original_template 	= $( template ).html();		// Get template - jQuery							
-		console.log(data);
-		console.log(original_template);
+		//console.log(data);
+		//console.log(original_template);
 		                                    
 		var template_html 	= original_template;	// temporary template html
 
