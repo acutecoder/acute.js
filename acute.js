@@ -395,12 +395,14 @@ var ACUTE =  {
                     }
                 }
                 
-                var new_obj = prev_obj;
+                query_obj = a.squish(prev_obj, query_obj);
+                
+                /*var new_obj = prev_obj;
                 for(var j in query_obj) {
                     new_obj[j] = query_obj[j];
                 }
-                query_obj = new_obj;
-	            
+                query_obj = new_obj;*/ // this could be removed once tested
+
 		    }
 		    
 		    var new_string = true;
@@ -436,3 +438,46 @@ var A = ( function( name ) {
 	);
 });
 
+
+var a = {
+	squish: (function( old_obj, new_obj ) {
+		var return_obj = old_obj;
+        for(var j in new_obj) {
+            return_obj[j] = new_obj[j];
+        }
+        return return_obj;
+	}),
+	
+	objectify: (function( str, sep1, sep2 ) {
+		
+		var new_obj = {};
+		
+		var args = arguments;
+		var arg_len = arguments.length;
+		var i = 0;
+		
+		var arr = str;
+		
+		var that = this;
+		
+		var split = function() {
+				
+			if(typeof arr == 'string') {
+				arr = arr.split(args[i]);
+				if(arg_len > 2) {
+					for( var j = 0; j < arr.length; j++ ) {
+						that.split()
+					}
+				}
+			}
+			else {
+				
+			}
+
+		}
+		
+		
+		
+		
+	})
+}

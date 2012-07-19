@@ -19,14 +19,35 @@ $(function() {
 
 	*/
 	$('#btn').on('click', function(){
-		//location.hash = 'hi_there';
 		A('sam').run({hey:'run'});
 	})
 	
 
 
+	$('#ub1').on('click', function() {
+		
+		location.hash = '#!' + 'hi=something/somethingelse=yeah';
+		uri.get_hash();
+		//uri.bang('bang', 'hi');
+	});
 	
 	
+	var b = 'something=somethingelse/and=another';
+	
+	console.log( a.objectify(b) );
+	
+	
+	
+	
+	$('#ub2').on('click', function() {
+		
+		uri.bang('bang', 'well');
+	});
+	
+	$('#ub3').on('click', function() {
+		
+		uri.bang('bang', 'bye');
+	});
 	
 	
 });

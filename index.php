@@ -34,6 +34,13 @@
 				right: 0;
 			}
 			
+			
+			#uri_btns{
+				position:absolute;
+				top: 300px;
+				right:0;
+			}
+			
 		</style>
 		
 	</head>
@@ -73,6 +80,13 @@
 			
 			
 			<button id = 'btn'>something</button>
+			
+			<div id="uri_btn">
+				<button id="ub1">uri</button>
+				<button id="ub2">uri</button>
+				<button id="ub3">uri</button>
+			</div>
+			
 			
 		</div>
 	
