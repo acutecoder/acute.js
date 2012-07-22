@@ -21,8 +21,17 @@ var uri = {
 	
 	arrival: (function() {
 		
-		if(active) {
+		if(this.active) {
 			
+			var hash_obj = this.get_hash();
+			
+			console.log( hash_obj );
+			
+			/*for( var i in hash_obj ) {
+				
+				console.log( hash_obj[i] );
+			}
+				*/
 		}
 		
 	}),
@@ -31,7 +40,7 @@ var uri = {
 		
 		//	TODO Consider allowing hasbang for single values.
 		
-		if(active) {
+		if(this.active) {
 			
 			if( container !== undefined && display !== undefined ) {
 				
@@ -42,7 +51,7 @@ var uri = {
 				for(var i in this.history.cur_state) {
 					
 					if(!new_bang && separator !== separator) {
-						separator = '/';
+						separator = this.separtator;
 					}
 					else if(new_bang) {
 						separator = '';
@@ -51,14 +60,12 @@ var uri = {
 					
 					hb_str += separator + i + operator + this.history.cur_state[i];
 				}
-				
 			}
-			
 		}
 	}),
 	
 	track_history: (function(container, display) {
-		if(his_active) {
+		if(this.his_active) {
 				//	this stores current state
 			this.history.cur_state[container] = display;
 			
@@ -76,18 +83,14 @@ var uri = {
 	
 	get_hash: (function() {
 		var cur_hash = location.hash;
-		stripped = cur_hash.split(this.hash);
-		stripped = stripped[1];
-		
-		
-		var separated = stripped.split(this.separator);
-		
-		//var hash_obj = a.squish(  )
-		
-		
-		
+		var uri = cur_hash.split(this.hash);
+		uri = uri[1];
 
+		//var hash_obj = a.squish(  )
+		return a.objectify(uri, this.separator, this.operator);
+		
 	})
 	
 }
 
+uri.arrival();

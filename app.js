@@ -33,10 +33,7 @@ $(function() {
 	
 	
 	var b = 'something=somethingelse/and=another';
-	
-	console.log( a.objectify(b) );
-	
-	
+
 	
 	
 	$('#ub2').on('click', function() {

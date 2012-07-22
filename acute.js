@@ -450,34 +450,30 @@ var a = {
 	
 	objectify: (function( str, sep1, sep2 ) {
 		
-		var new_obj = {};
+		var arr = str, return_obj = {}, temp_split = [];
+		arr = arr.split(sep1);
 		
-		var args = arguments;
-		var arg_len = arguments.length;
-		var i = 0;
+		var no = [];
 		
-		var arr = str;
-		
-		var that = this;
-		
-		var split = function() {
-				
-			if(typeof arr == 'string') {
-				arr = arr.split(args[i]);
-				if(arg_len > 2) {
-					for( var j = 0; j < arr.length; j++ ) {
-						that.split()
-					}
-				}
-			}
-			else {
-				
-			}
-
+        if( sep2 !== undefined ) {
+        	
+	        for(var i = 0; i <arr.length; i++) {
+	
+	            temp_split = arr[i].split(sep2);
+	            if(temp_split[1] !== undefined) {
+	                return_obj[temp_split[0]] = temp_split[1];
+	            }
+	            else {
+	            	alert('here');
+	            	no[no.length] = temp_split;
+	            }
+	        }
+	        return_obj['no_keys'] = no;
+			return return_obj;
 		}
-		
-		
-		
+		else {
+			return arr;
+		}
 		
 	})
 }
