@@ -3,8 +3,6 @@
 
 //	Creating :: 
 
-
-
 var uri = {
 	
 	active: true,
@@ -19,7 +17,7 @@ var uri = {
 		stack:[]
 	},
 	
-	arrival: (function() {
+	arrival: function() {
 		
 		if(this.active) {
 			
@@ -34,9 +32,9 @@ var uri = {
 				*/
 		}
 		
-	}),
+	},
 	
-	bang: (function(container, display) {
+	bang: function(container, display) {
 		
 		//	TODO Consider allowing hasbang for single values.
 		
@@ -62,9 +60,9 @@ var uri = {
 				}
 			}
 		}
-	}),
+	},
 	
-	track_history: (function(container, display) {
+	track_history: function(container, display) {
 		if(this.his_active) {
 				//	this stores current state
 			this.history.cur_state[container] = display;
@@ -74,14 +72,15 @@ var uri = {
 			this.history.stack[new_i] = {};
 			this.history.stack[new_i][container] = display;	*/
 		}
-	}),
+	},
 	
-	hash_bang: (function( str ) {
+	hash_bang: function( str ) {
 		if( str !== '')	location.hash = this.hash + str;
-	}),
+	},
 	
 	
-	get_hash: (function() {
+	get_hash: function() {
+
 		var cur_hash = location.hash;
 		var uri = cur_hash.split(this.hash);
 		uri = uri[1];
@@ -89,7 +88,16 @@ var uri = {
 		//var hash_obj = a.squish(  )
 		return a.objectify(uri, this.separator, this.operator);
 		
-	})
+	},
+
+
+	container_state_map : {},
+	add_to_map : function( name, container ) {
+		if( name !== undefined && container !== undefined ) {
+			this.container_state_map[name] = container;
+		}
+	}
+
 	
 }
 

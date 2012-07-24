@@ -116,6 +116,8 @@ var ACUTE =  {
 					}
 					else if( j === 'template' ) {
 						
+						uri.
+
 						template_engine( current_obj[j].container_id, current_obj[j].template_id, data ) ;
 					}   
 					else {
@@ -132,7 +134,7 @@ var ACUTE =  {
 			}
 		},
 		
-		//////////////////////////////////////////	return methods
+		//////////////////////////////////////////	return METHODS 	API
 		methods : {
 	
 			run : function( data ) {
@@ -450,30 +452,30 @@ var a = {
 	
 	objectify: (function( str, sep1, sep2 ) {
 		
-		var arr = str, return_obj = {}, temp_split = [];
-		arr = arr.split(sep1);
+		if( str !== undefined ) {
+			var arr = str, return_obj = {}, temp_split = [];
+			arr = arr.split(sep1);
+			
+			var no = [];
+			
+	        if( sep2 !== undefined ) {
+	        	
+		        for(var i = 0; i <arr.length; i++) {
 		
-		var no = [];
-		
-        if( sep2 !== undefined ) {
-        	
-	        for(var i = 0; i <arr.length; i++) {
-	
-	            temp_split = arr[i].split(sep2);
-	            if(temp_split[1] !== undefined) {
-	                return_obj[temp_split[0]] = temp_split[1];
-	            }
-	            else {
-	            	alert('here');
-	            	no[no.length] = temp_split;
-	            }
-	        }
-	        return_obj['no_keys'] = no;
-			return return_obj;
+		            temp_split = arr[i].split(sep2);
+		            if(temp_split[1] !== undefined) {
+		                return_obj[temp_split[0]] = temp_split[1];
+		            }
+		            else {
+		            	no[no.length] = temp_split;
+		            }
+		        }
+		        if( no.length !== 0 ) return_obj['no_keys'] = no;
+				return return_obj;
+			}
+			else {
+				return arr;
+			}
 		}
-		else {
-			return arr;
-		}
-		
 	})
 }

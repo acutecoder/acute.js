@@ -13,7 +13,7 @@
 				height: 600px;
 				margin: auto auto;
 				position:relative;
-				border: solid 1px #000;
+				/*border: solid 1px #000;*/
 			}
 			
 			#container{
@@ -82,9 +82,9 @@
 			<button id = 'btn'>something</button>
 			
 			<div id="uri_btn">
-				<button id="ub1">uri</button>
-				<button id="ub2">uri</button>
-				<button id="ub3">uri</button>
+				<button id="ub1">1</button>
+				<button id="ub2">2</button>
+				<button id="ub3">3</button>
 			</div>
 			
 			

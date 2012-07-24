@@ -26,24 +26,24 @@ $(function() {
 
 	$('#ub1').on('click', function() {
 		
-		location.hash = '#!' + 'hi=something/somethingelse=yeah';
+		uri.hash_bang('something/yeah');
 		uri.get_hash();
 		//uri.bang('bang', 'hi');
 	});
 	
 	
-	var b = 'something=somethingelse/and=another';
+	var b = 'somethingelse/another';
 
 	
 	
 	$('#ub2').on('click', function() {
 		
-		uri.bang('bang', 'well');
+		//uri.bang('bang', 'well');
 	});
 	
 	$('#ub3').on('click', function() {
 		
-		uri.bang('bang', 'bye');
+		//uri.bang('bang', 'bye');
 	});
 	
 	
