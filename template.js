@@ -1,68 +1,74 @@
-	
-var template_engine = function ( container_name, template_name, data )
-{
+var template_engine = function ( x, y, z ) {
 
-	
-	var return_html 	= '';	
-	var display_holder = $( container_name );		// Get Display holder - jQuery	
-	
-	this.init = function ( template, data )
-	{
-		var reg;
-		var original_template;
-		original_template 	= $( template ).html();		// Get template - jQuery							
-		//console.log(data);
-		//console.log(original_template);
-		                                    
-		var template_html 	= original_template;	// temporary template html
+	if( z !== undefined ) {
 
-	    
-	    /////////////////////////////////	Function to swap values with key
-	    this.swap = function( key, val ) {
-	    	reg = RegExp( '{{' + key + '}}' );
-			return template_html.replace( reg, val );	// Change Current Template Construction
-	    }
-	   
-	    if( data )
-	    {
-	    	////	Initialise Variables
+		container_name = x;
+		template_name = y;
+		data = z;
+
+		var return_html 	= '';	
+		var display_holder = $( container_name );		// Get Display holder - jQuery	
+	
+		var return_obj = (function ( template, data ) {
+
+			var reg;
+			var original_template;
+			original_template 	= $( template ).html();		// Get template - jQuery
+			                                    
+			var template_html 	= original_template;	// temporary template html
 		    
-		    var i 				= -1;
-		    var len 			= data.length;
-		    
-		    if( len ) { 	//	 If array
-		   
-		    	while( ++i < len ) {	//	Loop through array
-				
-		    		for( var j in data[i] )	{ //	Loop through Json
-		    		
-		    			template_html = this.swap( j, data[i][j] );		// Swap Key and Value and updating instance of template
-		    		}
-		    		return_html += template_html;		// Append to return HTML
-		    		template_html = original_template;	//	Revert temporary template to original
-				}
+		    /////////////////////////////////	Function to swap values with key
+		    var swap = function( key, val ) {
+		    	reg = RegExp( '{{' + key + '}}' );
+				return template_html.replace( reg, val );	// Change Current Template Construction
 		    }
-		    else {
-		    
-		    	//	Loop Through Json
-		    	//	swap Key and Value updating instance of template	
-		    	for( var j in data )	template_html = this.swap( j, data[j] );
 
-	    		return_html += template_html;	// Append to return HTML
+		    if( data ) {
 
+		    	////	Initialise Variables
+			    var i 				= -1;
+			    var len 			= data.length;
+			    
+			    if( len ) { 	//	 If array
+			   
+			    	while( ++i < len ) {	//	Loop through array
+					
+			    		for( var j in data[i] )	{ //	Loop through Json
+			    		
+			    			template_html = swap( j, data[i][j] );		// Swap Key and Value and updating instance of template
+			    		}
+			    		return_html += template_html;		// Append to return HTML
+			    		template_html = original_template;	//	Revert temporary template to original
+					}
+			    }
+			    else {
+			    
+			    	//	Loop Through Json
+			    	//	swap Key and Value updating instance of template	
+			    	for( var j in data )	template_html = swap( j, data[j] );
+
+		    		return_html += template_html;	// Append to return HTML
+			    }
 		    }
-	    }
-	    else	return_html = template_html;
-	    
-	    return function() {		
-			display_holder.html( return_html );
-			return display_holder;
-		}// use jQuery to change HTML
+		    else	return_html = template_html;
+		    
+		    return {
+
+		    	render : function() {
+		    		//for( var i in arguments ) {
+
+		    			display_holder.html( return_html );
+
+		    		//}
+					return display_holder;
+		    	}// use jQuery to change HTML
+			}
+		})( template_name, data );
+
+		return return_obj;
 	}
-	
-	
-	if( template_name !== undefined )	return this.init( template_name, data )();
+	else {
+		$( x ).html(y);
+		return;
+	}
 }
-	
-
-

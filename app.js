@@ -9,7 +9,7 @@ $(function() {
 	A('sam').get({
 		url: 'gateway.php', 
 		dataType:'json' 
-	 }).template( '#container', '#con_temp' );
+	 }).template( '#container', '#con_temp' ).render();
 	
 	/*
 	

@@ -61,10 +61,9 @@ var ACUTE =  {
 					var obj = this.hub[name]['seq'][last_i][what];
 					
 				}
-				else if( what === 'template' ) {
+				else if( what === 'template' || what == 'render' ) {
 
 					this.hub[name]['seq'][last_i][what] = attr;
-					
 				}
 				else {	//	if normal function
 					
@@ -116,9 +115,9 @@ var ACUTE =  {
 					}
 					else if( j === 'template' ) {
 						
-						uri.
+						//uri.
 
-						template_engine( current_obj[j].container_id, current_obj[j].template_id, data ) ;
+						return template_engine( current_obj[j].container_id, current_obj[j].template_id, data ) ;
 					}   
 					else {
 						var passing = current_obj[j]( data );
@@ -368,7 +367,7 @@ var ACUTE =  {
 			if( args !== undefined ) {
 
 				ajax_params['data'] = this.construct_query(args, ajax_params['data']);
-				console.log(ajax_params.data);
+				//console.log(ajax_params.data);
 			}
 			
 			/////	RUN AJAX
@@ -408,6 +407,7 @@ var ACUTE =  {
 		    }
 		    
 		    var new_string = true;
+
 		    for(var i in query_obj) {
 
 		        var  add_char = '&';
@@ -418,7 +418,7 @@ var ACUTE =  {
 		    
 		        return_string += add_char + i + '=' + query_obj[i];
 		    }
-		    console.log(return_string);
+		   // console.log(return_string);
 		    return return_string;
 		})
 	
