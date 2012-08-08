@@ -23,7 +23,7 @@ var uri = {
 			
 			var hash_obj = this.get_hash();
 			
-			console.log( hash_obj );
+			//console.log( hash_obj );
 			
 			/*for( var i in hash_obj ) {
 				
@@ -92,6 +92,7 @@ var uri = {
 
 
 	container_state_map : {},
+	
 	add_to_map : function( name, container ) {
 		if( name !== undefined && container !== undefined ) {
 			this.container_state_map[name] = container;

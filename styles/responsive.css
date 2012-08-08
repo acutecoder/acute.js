@@ -1,0 +1,61 @@
+
+#wrapper {
+	width: 900px;
+	height: 100%;
+	margin: auto;
+	position: relative;
+	border: solid 1px #000;
+}
+
+#wrapper > div {
+	text-align: center;
+	margin: 12px;
+	float: left;
+	color: #fff;
+}
+
+
+#h1 {
+	background: blue;
+	width: 30%;
+}
+
+#h2 {
+	background: green;
+	width: 30%;
+}
+
+#h3 {
+	background: red;
+	width: 30%;
+}
+
+#h4 {
+	background: green;
+	width: 30%;
+}
+
+#h5 {
+	background: red;
+	width: 30%;
+}
+
+#h6 {
+	background: blue ;
+	width: 30%;
+}
+
+#h7 {
+	background: red;
+	width: 30%;
+}
+
+#h8 {
+	background: blue;
+	width: 30%;
+}
+
+#h9 {
+	background: green;
+	width: 30%;
+}

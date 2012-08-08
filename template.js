@@ -9,7 +9,7 @@ var template_engine = function ( x, y, z ) {
 		var return_html 	= '';	
 		var display_holder = $( container_name );		// Get Display holder - jQuery	
 	
-		var return_obj = (function ( template, data ) {
+		(function ( template, data ) {
 
 			var reg;
 			var original_template;
@@ -52,6 +52,9 @@ var template_engine = function ( x, y, z ) {
 		    }
 		    else	return_html = template_html;
 		    
+
+		    alert('here');
+
 		    return (function( display_holder, return_html ) {
 
 		    	var display_holder = display_holder;
@@ -64,7 +67,7 @@ var template_engine = function ( x, y, z ) {
 
 		    	}// use jQuery to change HTML
 
-			})();
+			})( display_holder, return_html );
 
 		})( template_name, data );
 

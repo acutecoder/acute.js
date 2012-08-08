@@ -11,7 +11,8 @@
 
 //	ACUTE['hub']['name']['data'] = {};
 //	ACUTE['hub']['name']['seq'][0-10]['function_type'] = function () {		};
-//	ADUTE['hub']['name']['render']
+//	ACUTE['hub']['name']['render']
+//	ACUTE['hub']['name']['template']
 
 var ACUTE =  {
 	
@@ -41,9 +42,7 @@ var ACUTE =  {
 				}
 				else {
 						//alert( this.hub[name].length );
-					if( this.hub[name].length > 0 ) {
-						log('exists');
-					}	
+					if( this.hub[name].length > 0 ) log('exists');
 				}
 			}
 			else {	//	if it is not the seq name and initalisation
@@ -55,7 +54,6 @@ var ACUTE =  {
 				if( what === 'get' || what === 'post' ) {
 					
 						//	adds attr to nameded seq and type of fn
-						
 					this.hub[name]['seq'][last_i][what] = attr;
 					this.hub[name]['seq'][last_i][what]['type'] = what.toUpperCase();
 					
@@ -101,7 +99,6 @@ var ACUTE =  {
 		exe: function( i, data ) {
 					
 			var current_obj =  this.hub[this.current]['seq'][i];
-			
 			var next_i = i + 1;
 
 			if( next_i <=  this.hub[this.current]['seq'].length ) {
@@ -118,7 +115,12 @@ var ACUTE =  {
 						
 						//uri.
 
-						return template_engine( current_obj[j].container_id, current_obj[j].template_id, data ) ;
+						this.template( current_obj[j].container_id, current_obj[j].template_id, data );
+
+
+						//template_engine( current_obj[j].container_id, current_obj[j].template_id, data )
+						//console.log( current_obj[j].container_id, current_obj[j].template_id, data );
+						 //return
 					}   
 					else {
 						var passing = current_obj[j]( data );
@@ -134,17 +136,114 @@ var ACUTE =  {
 			}
 		},
 
+
+		template: function( x, y, z ) {
+
+			if( z !== undefined ) {
+
+				var container 	= x;
+				var template 	= y;
+				var data  		= z;
+
+				var return_html = '';
+				var $container = $( container );
+
+				var org_template = $( template ).html();
+				var templ_html = org_template;
+
+				var swap = function( temp, key, val ) {
+					var reg = RegExp( '{{' + key + '}}' );
+					return temp.replace( reg, val );
+				}
+
+				var i = -1;
+				var len = data.length;
+
+				if( len > 0 ) {
+
+					while( ++i < len ) {
+
+						for( var j in data[i] ) templ_html = swap( templ_html, j, data[i][j] );
+
+						return_html += templ_html;
+						templ_html = org_template; //**	not convinced this works
+					}
+				}
+				else {
+					for( var j in data ) templ_html = swap( templ_html, j data[j] );
+					return_html += templ_html;
+				}
+			}
+			else {
+
+				return_html = templ_html;
+			}
+
+		},
+
 		render: function( settings ) {
 			
 		}
 		
-		//////////////////////////////////////////	return METHODS 	API
+		
+		////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////	returns current selected objects data
+		return_data: function( what_data ) {	//	pass array get a json or single
+												//	depending on no of results
+			var cnt = 0, return_data = {};
+
+			for( var i in what_data ) {
+				return_data[what_data[i]] = this.hub[this.current]['data'][what_data[i]];
+				cnt++;
+			}
+			//alert( cnt );
+			if( cnt === 0 ) {
+				
+				for( var j in this.hub[this.current]['data'] ) console.log(this.hub[this.current]['data'][i]);
+				return_data = this.hub[this.current]['data'];
+			}
+			else if( cnt === 1 ) {
+				for( var b in return_data ) return_data = return_data[b];
+			}
+			return return_data;
+		},
+		
+		
+		////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////	BUILD
+		////////////////////////////////////////////////////////////	RETURN OBJECT
+		////////////////////////////////////////////////////////////
+		build: function() {	//	LIST OF ARGUMENTS
+			
+			var return_obj = function() {};	//	This construct
+				
+			for( var i in arguments ) {
+				
+				if( this.methods[arguments[i]] !== undefined) {
+					
+					return_obj.prototype[arguments[i]] = this.methods[arguments[i]]
+				}
+			}
+			//if( this.hub[this.current]['data'] !== undefined )  return_obj['data'] = this.hub[this.current]['data'];
+			return new return_obj();
+		},
+		
+		reset_index: function() {
+			
+		},
+		
+		clear: function() {
+			
+		},
+
+
+				//////////////////////////////////////////	return METHODS 	API
 		methods : {
 	
 			render : function( settings ) {
 				
 				ACUTE.render( ACUTE.current, settings );
-				return ACUTE.build (
+				return ACUTE.build(
 					'data'
 				)
 			},
@@ -250,58 +349,6 @@ var ACUTE =  {
 			}
 		},
 		
-		
-		////////////////////////////////////////////////////////////////////////////////////////////
-		//////////////////////////////////////////	returns current selected objects data
-		return_data: function( what_data ) {	//	pass array get a json or single
-												//	depending on no of results
-			var cnt = 0, return_data = {};
-
-			for( var i in what_data ) {
-				return_data[what_data[i]] = this.hub[this.current]['data'][what_data[i]];
-				cnt++;
-			}
-			//alert( cnt );
-			if( cnt === 0 ) {
-				
-				for( var j in this.hub[this.current]['data'] ) console.log(this.hub[this.current]['data'][i]);
-				return_data = this.hub[this.current]['data'];
-			}
-			else if( cnt === 1 ) {
-				for( var b in return_data ) return_data = return_data[b];
-			}
-			return return_data;
-		},
-		
-		
-		////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////	BUILD
-		////////////////////////////////////////////////////////////	RETURN OBJECT
-		////////////////////////////////////////////////////////////
-		build: function() {	//	LIST OF ARGUMENTS
-			
-			var return_obj = function() {};	//	This construct
-				
-			for( var i in arguments ) {
-				
-				if( this.methods[arguments[i]] !== undefined) {
-					
-					return_obj.prototype[arguments[i]] = this.methods[arguments[i]]
-				}
-			}
-			//if( this.hub[this.current]['data'] !== undefined )  return_obj['data'] = this.hub[this.current]['data'];
-			return new return_obj();
-		},
-		
-		reset_index: function() {
-			
-		},
-		
-		clear: function() {
-			
-		},
-
-		
 		///////////////////////////	TOOLS
 		
 		
@@ -393,7 +440,7 @@ var ACUTE =  {
 	
 		},
 		
-		construct_query : (function(new_data, old_str) {
+		construct_query : function(new_data, old_str) {
 
 		    var query_obj = new_data;
 		    
@@ -429,16 +476,15 @@ var ACUTE =  {
 		    for(var i in query_obj) {
 
 		        var  add_char = '&';
-		        if(new_string) {
+		        if( new_string ) {
 		            add_char = '';
 		            new_string = false;
 		        }        
 		    
 		        return_string += add_char + i + '=' + query_obj[i];
 		    }
-		   // console.log(return_string);
 		    return return_string;
-		})
+		}
 	
 };
 
