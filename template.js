@@ -52,17 +52,20 @@ var template_engine = function ( x, y, z ) {
 		    }
 		    else	return_html = template_html;
 		    
-		    return {
+		    return (function( display_holder, return_html ) {
 
-		    	render : function() {
-		    		//for( var i in arguments ) {
+		    	var display_holder = display_holder;
+		    	var return_html = return_html;
 
-		    			display_holder.html( return_html );
+		    	this.render = function() {
 
-		    		//}
+		    		display_holder.html( return_html );
 					return display_holder;
+
 		    	}// use jQuery to change HTML
-			}
+
+			})();
+
 		})( template_name, data );
 
 		return return_obj;

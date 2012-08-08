@@ -9,17 +9,12 @@ $(function() {
 	A('sam').get({
 		url: 'gateway.php', 
 		dataType:'json' 
-	 }).template( '#container', '#con_temp' ).render();
+	 }).template( '#container', '#con_temp' );
 	
-	/*
-	
-	A('sam').run({
-		hey : 'hi'
-	});
 
-	*/
+
 	$('#btn').on('click', function(){
-		A('sam').run({hey:'run'});
+		A('sam').run({hey:'run'}).render();
 	})
 	
 

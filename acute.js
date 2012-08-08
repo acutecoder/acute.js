@@ -11,6 +11,7 @@
 
 //	ACUTE['hub']['name']['data'] = {};
 //	ACUTE['hub']['name']['seq'][0-10]['function_type'] = function () {		};
+//	ADUTE['hub']['name']['render']
 
 var ACUTE =  {
 	
@@ -61,7 +62,7 @@ var ACUTE =  {
 					var obj = this.hub[name]['seq'][last_i][what];
 					
 				}
-				else if( what === 'template' || what == 'render' ) {
+				else if( what === 'template' ) {
 
 					this.hub[name]['seq'][last_i][what] = attr;
 				}
@@ -132,14 +133,27 @@ var ACUTE =  {
 				this.data_flag = true;
 			}
 		},
+
+		render: function( settings ) {
+			
+		}
 		
 		//////////////////////////////////////////	return METHODS 	API
 		methods : {
 	
+			render : function( settings ) {
+				
+				ACUTE.render( ACUTE.current, settings );
+				return ACUTE.build (
+					'data'
+				)
+			},
+
 			run : function( data ) {
 				ACUTE.run( ACUTE.current, data )
 				return ACUTE.build(
-					'data'
+					'data',
+					'render'
 				);
 			},
 			
@@ -191,9 +205,14 @@ var ACUTE =  {
 						container_id : container_id,
 						template_id : template_id
 					}
+
 					ACUTE.init( ACUTE.current, 'template', template_details );
+
+					return  ACUTE.build (
+						'data'//,
+						//'render'
+					);
 				}
-				
 			},
 			
 			data: function() {
@@ -229,7 +248,6 @@ var ACUTE =  {
 					}, 100 );
 				}
 			}
-			
 		},
 		
 		
