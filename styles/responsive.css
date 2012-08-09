@@ -1,61 +1,147 @@
-
-#wrapper {
-	width: 900px;
-	height: 100%;
-	margin: auto;
-	position: relative;
-	border: solid 1px #000;
+* {
+	margin: 0;
+	padding: 0;
 }
 
-#wrapper > div {
-	text-align: center;
-	margin: 12px;
-	float: left;
-	color: #fff;
+.clear {
+	clear: both;
 }
 
-
-#h1 {
-	background: blue;
-	width: 30%;
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+/* Styles */
 }
 
-#h2 {
-	background: green;
-	width: 30%;
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width : 321px) {
+/* Styles */
 }
 
-#h3 {
-	background: red;
-	width: 30%;
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width : 320px) {
+/* Styles */
 }
 
-#h4 {
-	background: green;
-	width: 30%;
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+/* Styles */
 }
 
-#h5 {
-	background: red;
-	width: 30%;
+/* iPads (landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+/* Styles */
 }
 
-#h6 {
-	background: blue ;
-	width: 30%;
+/* iPads (portrait) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+/* Styles */
 }
 
-#h7 {
-	background: red;
-	width: 30%;
+/* Desktops and laptops ----------- */
+@media only screen and (min-width : 768px) {
+
+	#wrapper {
+		width: 85%;
+		height: 100%;
+		margin: auto;
+		position: relative;
+	}
+	#wrapper > div {
+		text-align: center;
+		float: left;
+		color: #fff;
+	}
+
+	.row{
+		position: relative;
+		height: 200px;
+		width: 100%;
+		padding: 0;
+	}
+	.row > * {
+		position: relative;
+		height: 100%;
+		padding: 12px;
+	}
+
+
+	.small {
+		
+		width: 20%;
+	}
+
+	.medium {
+		width: 33%;
+	}
+
+	.large {
+		width: 40%;
+	}
+
+	#one {
+		position: relative;
+		left: 0;
+		top: 0;
+	}
+	#one_content {
+		background: #8bbaea;
+	}
+
+	#two {
+		position: absolute;
+		left: 22.4%;
+		top: 0;
+	}
+	#two_content {
+		background: #133659;
+	}
+
+	#three {
+    position: absolute;
+		
+	
+    top: 0;
+    right: 0%;
+}
+	#three_content {
+		background: #578fc7;
+	}
+
+
+	
+	
+	
+
+	#four {
+
+	}
+
+	#five {
+
+	}
+
+	#six {
+
+	}
+
+	#seven {
+
+	}
+
+	#eight {
+
+	}
+
+	#nine {
+
+	}
 }
 
-#h8 {
-	background: blue;
-	width: 30%;
+/* Large screens ----------- */
+@media only screen and (min-width : 1824px) {
 }
 
-#h9 {
-	background: green;
-	width: 30%;
+/* iPhone 4 ----------- */
+@media only screen and (-webkit-min-device-pixel-ratio : 1.5),only screen and (min-device-pixel-ratio : 1.5) {
+/* Styles */
 }
