@@ -11,7 +11,7 @@
 
 //	ACUTE['hub']['name']['data'] = {};
 //	ACUTE['hub']['name']['seq'][0-10]['function_type'] = function () {		};
-//	ACUTE['hub']['name']['render']
+//	ACUTE['hub']['name']['render'][0-10]
 //	ACUTE['hub']['name']['template']
 
 var ACUTE =  {
@@ -90,7 +90,6 @@ var ACUTE =  {
 				
 				this.exe( 0, data );
 			}
-			
 		},
 		
 		/////////////////////////////////////////////////////////////////////////////////
@@ -107,20 +106,14 @@ var ACUTE =  {
 					
 					if( j === 'get' || j === 'post' ) {
 						
-						//console.log( current_obj[j] );
-						
 						this.ajax( next_i, current_obj[j], data );
 					}
 					else if( j === 'template' ) {
 						
 						//uri.
-
-						this.template( current_obj[j].container_id, current_obj[j].template_id, data );
-
-
-						//template_engine( current_obj[j].container_id, current_obj[j].template_id, data )
-						//console.log( current_obj[j].container_id, current_obj[j].template_id, data );
-						 //return
+						if( this.hub[this.current].render === undefined ) this.hub[this.current].render = [];
+						this.hub[this.current].render[this.hub[this.current]
+						.render.length] = this.this.template( current_obj[j].container_id, current_obj[j].template_id, data );
 					}   
 					else {
 						var passing = current_obj[j]( data );
@@ -170,20 +163,23 @@ var ACUTE =  {
 					}
 				}
 				else {
-					for( var j in data ) templ_html = swap( templ_html, j data[j] );
+					for( var j in data ) templ_html = swap( templ_html, j, data[j] );
 					return_html += templ_html;
 				}
 			}
 			else {
 
 				return_html = templ_html;
-			}
+			};
 
+			return function() {
+				$container.html( return_html );
+			};
 		},
 
 		render: function( settings ) {
 			
-		}
+		},
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
