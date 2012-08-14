@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<style media="screen" type="text/css">
+		html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+			background: none repeat scroll 0 0 transparent;
+			border: 0 none;
+			font-size: 100%;
+			margin: 0;
+			outline: 0 none;
+			padding: 0;
+			vertical-align: baseline;
+		}
+	
+		.custom_single_share_panel {
+			float: left;
+			width: 472px;
+		}
+
+		.custom_single_sharing {
+			margin: 0 0 21px;
+			position: absolute;
+			right: 15px;
+			top: 8px;
+		}
+		
+		.social_sharing_widget {			
+			background-color: rgba(0, 0, 0, 0.21);
+			height: 34px;
+			padding: 7px 0 0 5px;
+			
+			width: 430px;
+		}
+
+		.sharing_holder {
+			position: absolute;
+			right: 0;
+			padding-top: 3px;
+		}
+		
+		
+		#single_entry_wrapper {
+			display: block;
+			margin-top: 75px;
+			position: relative;
+		}
+
+		/* NEW */
+		
+		.sharing_holder div {
+			float:left;
+		}		
+		</style>
+	</head>
+	<body style='background: #ff0000;'>
+		<div id='single_entry_wrapper'>
+			<div class='custom_single_share_panel'>
+				<div class="social_sharing_widget custom_single_sharing custom_sharing_cont_pos">
+					<span class="share_prompt"> Share: </span>
+					<span class='sharing_holder'>
+						<div id='sharePinterest'><a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Ftest.com&media=http%3A%2F%2Ftest.com" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a></div>
+						<div id='shareFacebook'><div class="fb-like" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false"></div></div>
+						<div id='shareTwitter'><a href="https://twitter.com/share" class="twitter-share-button">Tweet</a></div>
+						<div id='shareGooglePlus'><div class="g-plusone" data-size="medium"></div></div>
+					</span>
+				</div>
+			</div>
+		</div>
+		
+		
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
+		
+		<script type="text/javascript">
+		  (function() {
+			var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			po.src = 'https://apis.google.com/js/plusone.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		  })();
+		</script>
+		
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+			  var js, fjs = d.getElementsByTagName(s)[0];
+			  if (d.getElementById(id)) return;
+			  js = d.createElement(s); js.id = id;
+			  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=269004676547604";
+			  fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+		</script>
+
+
+	</body>
+</html>
