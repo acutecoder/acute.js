@@ -1,32 +1,87 @@
-var a = {
+var acute_global = 'a';
 
-	model: function() {
+var ACUTE = (function() {
 
-	},
+	// Private Variables
 
-	view: function() {
+	var key = 0,
+		b =  'hi',
 
-	},
+		data = {},
 
-	collection: function() {
+	// Private Methods
 
-	},
+	create = function( o ) {
+		function F() {}
+        F.prototype = o;
+        return new F();
+	};
 
-	router: function() {
+	
 
-	},
+	//	Public
+
+	return {
+
+		model : {
+
+			//	Public Variables
+			
+			be: 'hmm',
 
 
 
-	base: {
-		create: function() {
+			//	Public  Methods
+
+			create: function( at ) {
+				var ret = create( this );
+				for( var i in at ) ret[i] = at[i];
+				ret['$$$'] = key++;
+				data[ret['$$$']] = {};
+				ret.init();
+				return ret;
+			},
+
+			init: function() {
+				alert( this.$$$ );
+			},
+
+			get: function() {
+
+			},
+
+			set: function() {
+
+			},
+
+			each: function() {
+				
+			}
+
+
 
 		},
-	},
 
-};
+		view : function() {
 
+		},
+
+		collection : function() {
+
+		},
+
+		router : function() {
+
+		}
+	};
+})();
+
+(function(){
+	var __ACUTE__ = function() {};
+	__ACUTE__.prototype = ACUTE;
+    window[acute_global] = new __ACUTE__();
+})();
 
 var A = function( name ) {
-	a
+	//a
 };
